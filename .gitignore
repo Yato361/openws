@@ -1,0 +1,7 @@
+weather-arduino-api/.idea
+weather-arduino-api/weather-arduino-api.sln
+weather-arduino-api/weather-arduino-api/bin
+weather-arduino-api/weather-arduino-api/obj
+weather-arduino-api/weather-arduino-api/Properties
+weather-arduino-api/weather-arduino-api/appsettings.Development.json
+weather-arduino-api/weather-arduino-api/appsettings.json
