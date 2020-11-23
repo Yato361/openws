@@ -31,7 +31,7 @@ IPAddress ip(192,168,178,10);
 // Ethernet Library als Server initialisieren // Port festlegen: default "80"
 EthernetServer server(80);
 
-char server2[] = "www.google.com";
+//char server2[] = "482130.0unknownuser.de";
 
 void setup() {
   // Serielle Datenübertragung, für den Monitor erstellen
@@ -43,11 +43,11 @@ void setup() {
   // MQ-2 - Startprozess:
   mq2.begin();
   // Ethernet Verbindung und Server starten
- Ethernet.begin(mac, ip);
- server.begin();
- Serial.print("Server gestartet. IP: ");
- // IP des Arduino-Servers ausgeben
- Serial.println(Ethernet.localIP());
+   Ethernet.begin(mac, ip);
+  server.begin();
+  Serial.print("Server gestartet. IP: ");
+  // IP des Arduino-Servers ausgeben
+  Serial.println(Ethernet.localIP());
 }
 
 void loop() {
@@ -64,14 +64,14 @@ void loop() {
   EthernetClient client = server.available();
   // Wenn es einen Client gibt, dann...
 
-  if (client.connect(server2, gi80)) {
+  /*if (client.connect(server2, 80)) {
     Serial.println("connected");
     // Make your API request:
     client.println("GET /sendmsg?user=mohammed.atha&password=********&api_id=3539384&to=********&text=hello HTTP/1.1");
     client.println("Host: api.clickatell.com/http/sendmsg");
     client.println("Connection: close");
     client.println();
-  }
+  }*/
   
   if (client) {
     Serial.println("Neuer Client");
@@ -91,11 +91,11 @@ void loop() {
         // dann ist die Anfrage zu Ende und wir können antworten
           if (c == '\n' && currentLineIsBlank) {
               
-              /*// HTTP Header 200 an den Browser schicken
+              // HTTP Header 200 an den Browser schicken
               client.println("HTTP/1.1 200 OK");
               client.println("Content-Type: text/html");
               client.println("Connection: close"); // Verbindung wird nach Antwort beendet
-              client.println("Refresh: 2"); // Seite alle 25 Sekunden neu abfragen
+              client.println("Refresh: 3"); // Seite alle 25 Sekunden neu abfragen
               client.println();
               
               // Ab hier berginnt der HTML-Code, der an den Browser geschickt wird
@@ -103,10 +103,16 @@ void loop() {
               client.println("<html>");
               client.print("DHT-11 (Temperatur): <b><br>");
               client.print(dht.readTemperature());
-              client.print("<br></b>DHT-11 (Luftfeuchtigkeit): <b><br>");
+              client.print("C<br></b>DHT-11 (Luftfeuchtigkeit): <b><br>");
               client.print(dht.readHumidity());
-              client.println("</b><br />"); 
-              client.println("</html>");*/
+              client.print("%<br></b>MQ-2 (LPG): <b><br>");
+              client.print(mq2.readLPG());
+              client.print("PPM<br></b>MQ-2 (CO): <b><br>");
+              client.print(mq2.readCO());
+              client.print("PPM<br></b>MQ-2 (Rauch): <b><br>");
+              client.print(mq2.readSmoke());
+              client.println("PPM<br></b>"); 
+              client.println("</html>");
               break;
             }
             if (c == '\n') {
@@ -125,7 +131,7 @@ void loop() {
     client.stop();
     Serial.println("Verbindung mit Client beendet.\n");
  }
- display.setTextColor(WHITE);
+    display.setTextColor(WHITE);
     display.setTextSize(1);
     display.println("Initialisierung...");    // Testausgabe OLED
     delay(2000);
