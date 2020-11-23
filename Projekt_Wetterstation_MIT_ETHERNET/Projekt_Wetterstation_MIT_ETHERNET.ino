@@ -31,6 +31,8 @@ IPAddress ip(192,168,178,10);
 // Ethernet Library als Server initialisieren // Port festlegen: default "80"
 EthernetServer server(80);
 
+char server2[] = "www.google.com";
+
 void setup() {
   // Serielle Datenübertragung, für den Monitor erstellen
   Serial.begin(9600);
@@ -78,7 +80,16 @@ void loop() {
         // Wenn die Zeile leer ist und ein Zeilenwechsel (das \n) kommt,
         // dann ist die Anfrage zu Ende und wir können antworten
           if (c == '\n' && currentLineIsBlank) {
-              // HTTP Header 200 an den Browser schicken
+              if (client.connect(server2, 80)) {
+                Serial.println("connected");
+                // Make your API request:
+                client.println("GET /sendmsg?user=mohammed.atha&password=********&api_id=3539384&to=********&text=hello HTTP/1.1");
+                client.println("Host: api.clickatell.com/http/sendmsg");
+                client.println("Connection: close");
+                client.println();
+              }
+              
+              /*// HTTP Header 200 an den Browser schicken
               client.println("HTTP/1.1 200 OK");
               client.println("Content-Type: text/html");
               client.println("Connection: close"); // Verbindung wird nach Antwort beendet
@@ -93,7 +104,7 @@ void loop() {
               client.print("<br></b>DHT-11 (Luftfeuchtigkeit): <b><br>");
               client.print(dht.readHumidity());
               client.println("</b><br />"); 
-              client.println("</html>");
+              client.println("</html>");*/
               break;
             }
             if (c == '\n') {

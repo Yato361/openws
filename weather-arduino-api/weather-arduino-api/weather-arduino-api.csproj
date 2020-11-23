@@ -5,5 +5,9 @@
         <RootNamespace>weather_arduino_api</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MySqlConnector" Version="1.1.0" />
+    </ItemGroup>
+
 
 </Project>
