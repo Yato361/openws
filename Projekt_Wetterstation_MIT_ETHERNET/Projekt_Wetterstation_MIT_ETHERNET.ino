@@ -28,7 +28,7 @@ MQ2 mq2(Analog_Input);
 // (Aufkleber auf Rückseite)
 byte mac[] = {0x90, 0xA2, 0xDA, 0x00, 0xFB, 0x80};
 // Eine IP im lokalen Netzwerk angeben. 
-IPAddress ip(192,168,1,1);
+IPAddress ip(192,168,178,10);
 // Ethernet Library als Server initialisieren // Port festlegen: default "80"
 EthernetServer server(80);
 
