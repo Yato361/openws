@@ -20,7 +20,6 @@ DHT dht(DHTPIN, DHTTYPE);
 
 // Globale Vars. benötigt MQ-2
 int Analog_Input = A0;    // Analoger Pin am Arduino: A0
-int lpg, co, smoke;
 
 MQ2 mq2(Analog_Input);
 
@@ -28,7 +27,7 @@ MQ2 mq2(Analog_Input);
 // (Aufkleber auf Rückseite)
 byte mac[] = {0x90, 0xA2, 0xDA, 0x00, 0xFB, 0x80};
 // Eine IP im lokalen Netzwerk angeben. 
-IPAddress ip(192,168,1,1);
+IPAddress ip(192,168,178,10);
 // Ethernet Library als Server initialisieren // Port festlegen: default "80"
 EthernetServer server(80);
 
@@ -54,12 +53,8 @@ void loop() {
   float t = dht.readTemperature();
   float h = dht.readHumidity();
   // MQ-2 - Daten
-  float* values = mq2.read(true); // für serielle Werte auf false setzen 
-  //lpg = values[0];
   float lpg = mq2.readLPG();
-  //co = values[1];
   float co = mq2.readCO();
-  //smoke = values[2];
   float smoke = mq2.readSmoke();
 
   // server.available() schaut, ob ein Client verfügbar ist und Daten
