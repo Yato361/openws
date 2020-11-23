@@ -118,12 +118,12 @@ void loop() {
    Serial.println("");
  }
 }
-/*
+
   display.setTextColor(WHITE);
   display.setTextSize(1);
   display.println("Initialisierung...");    // Testausgabe OLED
   delay(2000);
-*//*
+
   // Grundeinstellung + leeres Display    DHT11- Teil
   display.clearDisplay();
   // Textfarbe setzen | AUCH BEI MONOCHROMEN OLEDs
@@ -151,4 +151,4 @@ void loop() {
   display.println("Rauch:" + String(smoke, 0)+ " PPM");
   display.display();
   delay(5000);    // Ende des zweiten Steps
-}*/
+}
