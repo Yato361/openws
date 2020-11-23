@@ -116,10 +116,8 @@ void loop() {
    client.stop();
    Serial.println("Verbindung mit Client beendet.");
    Serial.println("");
- }
-}
 
-  display.setTextColor(WHITE);
+     display.setTextColor(WHITE);
   display.setTextSize(1);
   display.println("Initialisierung...");    // Testausgabe OLED
   delay(2000);
@@ -151,4 +149,5 @@ void loop() {
   display.println("Rauch:" + String(smoke, 0)+ " PPM");
   display.display();
   delay(5000);    // Ende des zweiten Steps
+ }
 }
