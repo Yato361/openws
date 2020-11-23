@@ -28,7 +28,7 @@ MQ2 mq2(Analog_Input);
 // (Aufkleber auf Rückseite)
 byte mac[] = {0x90, 0xA2, 0xDA, 0x00, 0xFB, 0x80};
 // Eine IP im lokalen Netzwerk angeben. 
-IPAddress ip(192,168,178,10);
+IPAddress ip(192,168,1,1);
 // Ethernet Library als Server initialisieren // Port festlegen: default "80"
 EthernetServer server(80);
 
@@ -110,44 +110,43 @@ void loop() {
             }
          }
       }
-   // Kleine Pause
-   delay(1);
-   // Verbindung schliessen
-   client.stop();
-   Serial.println("Verbindung mit Client beendet.\n");
-
-     display.setTextColor(WHITE);
-  display.setTextSize(1);
-  display.println("Initialisierung...");    // Testausgabe OLED
-  delay(2000);
-
-  // Grundeinstellung + leeres Display    DHT11- Teil
-  display.clearDisplay();
-  // Textfarbe setzen | AUCH BEI MONOCHROMEN OLEDs
-  display.setTextColor(WHITE);
-  // Textgröße einstellen ("1" empfohlen)
-  display.setTextSize(1);
-  // Cursorposition einstellen
-  display.setCursor(1, 0);
-  // Daten des Sensors auf dem OLED ausgeben
-  
-  display.println("Temperatur:       " + String(t, 0) + "C");    // Ausgabe Temperatur
-  display.setTextSize(1);
-  display.println("Luftfeuchtigkeit: " + String(h, 0) + "%");  // Ausgabe Luftfeuchtigkeit
-  display.display();
-  delay(5000);     // Ende des ersten Steps
-
-  // Grundeinstellung + leeres Display    MQ-2 Teil
-  display.clearDisplay();
-  display.setTextColor(WHITE);
-  display.setTextSize(1);
-  display.setCursor(1, 0);
-  display.println("LPG:  " + String(lpg, 0)+ " PPM");
-  display.setTextSize(1);
-  display.println("CO :  " + String(co, 0)+ " PPM");
-  display.setTextSize(1);
-  display.println("Rauch:" + String(smoke, 0)+ " PPM");
-  display.display();
-  delay(5000);    // Ende des zweiten Steps
+    // Kleine Pause
+    delay(1);
+    // Verbindung schliessen
+    client.stop();
+    Serial.println("Verbindung mit Client beendet.\n");
  }
+ display.setTextColor(WHITE);
+    display.setTextSize(1);
+    display.println("Initialisierung...");    // Testausgabe OLED
+    delay(2000);
+  
+    // Grundeinstellung + leeres Display    DHT11- Teil
+    display.clearDisplay();
+    // Textfarbe setzen | AUCH BEI MONOCHROMEN OLEDs
+    display.setTextColor(WHITE);
+    // Textgröße einstellen ("1" empfohlen)
+    display.setTextSize(1);
+    // Cursorposition einstellen
+    display.setCursor(1, 0);
+    // Daten des Sensors auf dem OLED ausgeben
+    
+    display.println("Temperatur:       " + String(t, 0) + "C");    // Ausgabe Temperatur
+    display.setTextSize(1);
+    display.println("Luftfeuchtigkeit: " + String(h, 0) + "%");  // Ausgabe Luftfeuchtigkeit
+    display.display();
+    delay(5000);     // Ende des ersten Steps
+  
+    // Grundeinstellung + leeres Display    MQ-2 Teil
+    display.clearDisplay();
+    display.setTextColor(WHITE);
+    display.setTextSize(1);
+    display.setCursor(1, 0);
+    display.println("LPG:  " + String(lpg, 0)+ " PPM");
+    display.setTextSize(1);
+    display.println("CO :  " + String(co, 0)+ " PPM");
+    display.setTextSize(1);
+    display.println("Rauch:" + String(smoke, 0)+ " PPM");
+    display.display();
+    delay(5000);    // Ende des zweiten Steps
 }
