@@ -50,12 +50,11 @@ void setup() {
 
 void loop() {
   // DHT11- Daten
-  float t = dht.readTemperature();
-  float h = dht.readHumidity();
   // MQ-2 - Daten
-  float lpg = mq2.readLPG();
-  float co = mq2.readCO();
-  float smoke = mq2.readSmoke();
+  //float* values = mq2.read(true); // für serielle Werte auf false setzen 
+  //lpg = values[0];
+  //co = values[1];
+  //smoke = values[2];
 
   // server.available() schaut, ob ein Client verfügbar ist und Daten
   // an den Server schicken möchte. Gibt dann eine Client-Objekt zurück,
@@ -126,9 +125,9 @@ void loop() {
     display.setCursor(1, 0);
     // Daten des Sensors auf dem OLED ausgeben
     
-    display.println("Temperatur:       " + String(t, 0) + "C");    // Ausgabe Temperatur
+    display.println("Temperatur:       " + String(dht.readTemperature(), 0) + "C");    // Ausgabe Temperatur
     display.setTextSize(1);
-    display.println("Luftfeuchtigkeit: " + String(h, 0) + "%");  // Ausgabe Luftfeuchtigkeit
+    display.println("Luftfeuchtigkeit: " + String(dht.readHumidity(), 0) + "%");  // Ausgabe Luftfeuchtigkeit
     display.display();
     delay(5000);     // Ende des ersten Steps
   
@@ -137,11 +136,11 @@ void loop() {
     display.setTextColor(WHITE);
     display.setTextSize(1);
     display.setCursor(1, 0);
-    display.println("LPG:  " + String(lpg, 0)+ " PPM");
+    display.println("LPG:  " + String(mq2.readLPG(), 0)+ " PPM");
     display.setTextSize(1);
-    display.println("CO :  " + String(co, 0)+ " PPM");
+    display.println("CO :  " + String(mq2.readCO(), 0)+ " PPM");
     display.setTextSize(1);
-    display.println("Rauch:" + String(smoke, 0)+ " PPM");
+    display.println("Rauch:" + String(mq2.readSmoke(), 0)+ " PPM");
     display.display();
     delay(5000);    // Ende des zweiten Steps
 }
