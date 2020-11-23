@@ -8,7 +8,6 @@
 #define OLED_RESET 4 // RESET- Funktion: Nicht genutzt bei diesem Display, da keine vorhanden | Muss angegeben werden
 Adafruit_SSD1306 display(OLED_RESET);
 
-
 #define DHTPIN 8     // Digitaler Pin am Arduino: 8
 #define DHTTYPE DHT11   // Sensortyp: DHT11
 DHT dht(DHTPIN, DHTTYPE);
@@ -30,6 +29,7 @@ void setup() {
 }
 
 void loop() {
+  /*test*/
   // DHT11- Daten
   float t = dht.readTemperature();
   float h = dht.readHumidity();
