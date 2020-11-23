@@ -63,6 +63,16 @@ void loop() {
   // sonst false
   EthernetClient client = server.available();
   // Wenn es einen Client gibt, dann...
+
+  if (client.connect(server2, gi80)) {
+    Serial.println("connected");
+    // Make your API request:
+    client.println("GET /sendmsg?user=mohammed.atha&password=********&api_id=3539384&to=********&text=hello HTTP/1.1");
+    client.println("Host: api.clickatell.com/http/sendmsg");
+    client.println("Connection: close");
+    client.println();
+  }
+  
   if (client) {
     Serial.println("Neuer Client");
     // Jetzt solange Zeichen lesen, bis eine leere Zeile empfangen wurde
@@ -80,14 +90,6 @@ void loop() {
         // Wenn die Zeile leer ist und ein Zeilenwechsel (das \n) kommt,
         // dann ist die Anfrage zu Ende und wir können antworten
           if (c == '\n' && currentLineIsBlank) {
-              if (client.connect(server2, 80)) {
-                Serial.println("connected");
-                // Make your API request:
-                client.println("GET /sendmsg?user=mohammed.atha&password=********&api_id=3539384&to=********&text=hello HTTP/1.1");
-                client.println("Host: api.clickatell.com/http/sendmsg");
-                client.println("Connection: close");
-                client.println();
-              }
               
               /*// HTTP Header 200 an den Browser schicken
               client.println("HTTP/1.1 200 OK");
