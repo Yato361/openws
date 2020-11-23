@@ -85,19 +85,11 @@ void loop() {
         // dann ist die Anfrage zu Ende und wir können antworten
           if (c == '\n' && currentLineIsBlank) {
               // HTTP Header 200 an den Browser schicken
-              client.println("HTTP/1.1 200 OK");
-              client.println("Content-Type: text/html");
-              client.println("Connection: close"); // Verbindung wird nach Antwort beendet
-              client.println("Refresh: 2"); // Seite alle 25 Sekunden neu abfragen
-              client.println();
+              client.println("HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nRefresh: 2\n<!DOCTYPE HTML>\n<html> DHT-11 (Pin A0): <b>"); // Seite alle 25 Sekunden neu abfragen
               
               // Ab hier berginnt der HTML-Code, der an den Browser geschickt wird
-              client.println("<!DOCTYPE HTML>");
-              client.println("<html>");
-              client.print("DHT-11 (Pin A0): <b>");
               client.print(analogRead(A0));
-              client.println("</b><br />"); 
-              client.println("</html>");
+              client.println("</b><br />\n</html>");
               break;
             }
             if (c == '\n') {
@@ -131,6 +123,7 @@ void loop() {
   // Cursorposition einstellen
   display.setCursor(1, 0);
   // Daten des Sensors auf dem OLED ausgeben
+  
   display.println("Temperatur:       " + String(t, 0) + "C");    // Ausgabe Temperatur
   display.setTextSize(1);
   display.println("Luftfeuchtigkeit: " + String(h, 0) + "%");  // Ausgabe Luftfeuchtigkeit
