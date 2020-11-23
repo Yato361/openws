@@ -88,8 +88,10 @@ void loop() {
               // Ab hier berginnt der HTML-Code, der an den Browser geschickt wird
               client.println("<!DOCTYPE HTML>");
               client.println("<html>");
-              client.print("DHT-11 (Pin A0): <b>");
-              client.print(analogRead(A0));
+              client.print("DHT-11 (Temperatur): <b><br>");
+              client.print(dht.readTemperature());
+              client.print("<br></b>DHT-11 (Luftfeuchtigkeit): <b><br>");
+              client.print(dht.readHumidity());
               client.println("</b><br />"); 
               client.println("</html>");
               break;
