@@ -85,7 +85,9 @@ void loop() {
         // dann ist die Anfrage zu Ende und wir können antworten
           if (c == '\n' && currentLineIsBlank) {
               // HTTP Header 200 an den Browser schicken
-              client.println("HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nRefresh: 2\n<!DOCTYPE HTML>\n<html> DHT-11 (Pin A0): " + (char*)analogRead(A0) + " <b></b><br />\n</html>"); // Seite alle 25 Sekunden neu abfragen
+              client.println("HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nRefresh: 2\n<!DOCTYPE HTML>\n<html> DHT-11 (Pin A0): "); // Seite alle 25 Sekunden neu abfragen
+              client.print(analogRead(A0));
+              client.println("<b></b><br />\n</html>");
               break;
             }
             if (c == '\n') {
