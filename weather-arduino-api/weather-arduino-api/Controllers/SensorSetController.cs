@@ -1,7 +1,11 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using weather_arduino_api.Database.HardwareId;
 using weather_arduino_api.Database.SensorSet;
+using weather_arduino_api.Protocol;
+using weather_arduino_api.Protocol.Util;
 
 namespace weather_arduino_api.Controllers
 {
@@ -17,21 +21,27 @@ namespace weather_arduino_api.Controllers
         }
         
         [HttpGet]
-        public SensorSet Get(string hwid, string temperature, string humidity, string lpg, string co, string smoke)
+        public ResponseTypes Get(string hwid, string temperature, string humidity, string lpg, string co, string smoke)
         {
-            if (hwid == null) hwid = "0";
-            if (temperature == null) temperature = "0";
-            if (humidity == null) humidity = "0";
-            if (lpg == null) lpg = "0";
-            if (co == null) co = "0";
-            if (smoke == null) smoke = "0";
-            
-            DatabaseSensorSet databaseSensorSet = new DatabaseSensorSet();
-            SensorSet sensorSet = new SensorSet(Int32.Parse(hwid),databaseSensorSet.GetCurrentTimeStamp(), Single.Parse(temperature),
-            Single.Parse(humidity), Single.Parse(lpg), Single.Parse(co), Single.Parse(smoke));
-            
-            databaseSensorSet.InsertSensorSetToDatabase(sensorSet);
-            return sensorSet;
+            try
+            {
+                ResponseTypeSensorSetEngine engine = new ResponseTypeSensorSetEngine(hwid,temperature,humidity,lpg,co,smoke);
+                if (!engine.IsCompletelyNotNull())
+                    return ResponseTypes.NOT_COMPLETE_ERROR;
+                if (!engine.IsFormattedRightly())
+                    return ResponseTypes.UNFORMATTED_TYP_ERROR;
+                SensorSet sensorSet = engine.FormatSensorSet();
+                DatabaseHwid dbHwid = new DatabaseHwid();
+                if (!dbHwid.ContainsHardwareId(sensorSet.Hwid))
+                    return ResponseTypes.NO_RIGHTS_ERROR;
+                DatabaseSensorSet databaseSensorSet = new DatabaseSensorSet();
+                databaseSensorSet.InsertSensorSetToDatabase(sensorSet);
+                return ResponseTypes.SUCCESSFULL;
+            }
+            catch (Exception e)
+            {
+                return ResponseTypes.EXCEPTION_ERROR;
+            }
         }
     }
 }
