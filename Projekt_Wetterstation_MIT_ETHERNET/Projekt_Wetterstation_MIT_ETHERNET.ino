@@ -60,7 +60,7 @@ void loop() {
       client.print("&humidity=");
       client.print(dht.readHumidity());
       client.print("&lpg=");
-      client.print(mq2.readLPG();
+      client.print(mq2.readLPG());
       client.print("&co=");
       client.print(mq2.readCO());
       client.print("&smoke=");
