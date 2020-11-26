@@ -28,10 +28,10 @@ MQ2 mq2(Analog_Input);
 byte mac[] = {0x90, 0xA2, 0xDA, 0x00, 0xFB, 0x80};
 // Eine IP im lokalen Netzwerk angeben. 
 IPAddress ip(192,168,178,10);
-// Ethernet Library als Server initialisieren // Port festlegen: default "80"
-EthernetServer server(80);
-
-//char server2[] = "482130.0unknownuser.de";
+//The char pointer contains the whole server domain as chars.
+char* server= ""; 
+//Defining the EthernetClient
+EthernetClient client(server,80);
 
 void setup() {
   // Serielle Datenübertragung, für den Monitor erstellen
@@ -43,125 +43,13 @@ void setup() {
   // MQ-2 - Startprozess:
   mq2.begin();
   // Ethernet Verbindung und Server starten
-   Ethernet.begin(mac, ip);
-  server.begin();
-  Serial.print("Server gestartet. IP: ");
+  Ethernet.begin(mac, ip);
+  
+  Serial.print("Client gestartet. IP: ");
   // IP des Arduino-Servers ausgeben
   Serial.println(Ethernet.localIP());
 }
 
 void loop() {
-  // DHT11- Daten
-  // MQ-2 - Daten
-  //float* values = mq2.read(true); // für serielle Werte auf false setzen 
-  //lpg = values[0];
-  //co = values[1];
-  //smoke = values[2];
-
-  // server.available() schaut, ob ein Client verfügbar ist und Daten
-  // an den Server schicken möchte. Gibt dann eine Client-Objekt zurück,
-  // sonst false
-  EthernetClient client = server.available();
-  // Wenn es einen Client gibt, dann...
-
-  /*if (client.connect(server2, 80)) {
-    Serial.println("connected");
-    // Make your API request:
-    client.println("GET /sendmsg?user=mohammed.atha&password=********&api_id=3539384&to=********&text=hello HTTP/1.1");
-    client.println("Host: api.clickatell.com/http/sendmsg");
-    client.println("Connection: close");
-    client.println();
-  }*/
-  
-  if (client) {
-    Serial.println("Neuer Client");
-    // Jetzt solange Zeichen lesen, bis eine leere Zeile empfangen wurde
-    // HTTP Requests enden immer mit einer leeren Zeile 
-    boolean currentLineIsBlank = true;
-    // Solange Client verbunden 
-    while (client.connected()) {
-      // client.available() gibt die Anzahl der Zeichen zurück, die zum Lesen
-      // verfügbar sind
-      if (client.available()) {
-          // Ein Zeichen lesen und am seriellen Monitor ausgeben
-          char c = client.read();
-          Serial.write(c);
-        // In currentLineIsBlank merken wir uns, ob diese Zeile bisher leer war.
-        // Wenn die Zeile leer ist und ein Zeilenwechsel (das \n) kommt,
-        // dann ist die Anfrage zu Ende und wir können antworten
-          if (c == '\n' && currentLineIsBlank) {
-              
-              // HTTP Header 200 an den Browser schicken
-              client.println("HTTP/1.1 200 OK");
-              client.println("Content-Type: text/html");
-              client.println("Connection: close"); // Verbindung wird nach Antwort beendet
-              client.println("Refresh: 3"); // Seite alle 25 Sekunden neu abfragen
-              client.println();
-              
-              // Ab hier berginnt der HTML-Code, der an den Browser geschickt wird
-              client.println("<!DOCTYPE HTML>");
-              client.println("<html>");
-              client.print("DHT-11 (Temperatur): <b><br>");
-              client.print(dht.readTemperature());
-              client.print("C<br></b>DHT-11 (Luftfeuchtigkeit): <b><br>");
-              client.print(dht.readHumidity());
-              client.print("%<br></b>MQ-2 (LPG): <b><br>");
-              client.print(mq2.readLPG());
-              client.print("PPM<br></b>MQ-2 (CO): <b><br>");
-              client.print(mq2.readCO());
-              client.print("PPM<br></b>MQ-2 (Rauch): <b><br>");
-              client.print(mq2.readSmoke());
-              client.println("PPM<br></b>"); 
-              client.println("</html>");
-              break;
-            }
-            if (c == '\n') {
-              // Zeilenwechsel, also currentLineIsBlack erstmal auf True setzen
-              currentLineIsBlank = true;
-            } 
-            else if (c != '\r') {
-              // Zeile enthält Zeichen, also currentLineIsBlack auf False setzen
-              currentLineIsBlank = false;
-            }
-         }
-      }
-    // Kleine Pause
-    delay(1);
-    // Verbindung schliessen
-    client.stop();
-    Serial.println("Verbindung mit Client beendet.\n");
- }
-    display.setTextColor(WHITE);
-    display.setTextSize(1);
-    display.println("Initialisierung...");    // Testausgabe OLED
-    delay(2000);
-  
-    // Grundeinstellung + leeres Display    DHT11- Teil
-    display.clearDisplay();
-    // Textfarbe setzen | AUCH BEI MONOCHROMEN OLEDs
-    display.setTextColor(WHITE);
-    // Textgröße einstellen ("1" empfohlen)
-    display.setTextSize(1);
-    // Cursorposition einstellen
-    display.setCursor(1, 0);
-    // Daten des Sensors auf dem OLED ausgeben
     
-    display.println("Temperatur:       " + String(dht.readTemperature(), 0) + "C");    // Ausgabe Temperatur
-    display.setTextSize(1);
-    display.println("Luftfeuchtigkeit: " + String(dht.readHumidity(), 0) + "%");  // Ausgabe Luftfeuchtigkeit
-    display.display();
-    delay(5000);     // Ende des ersten Steps
-  
-    // Grundeinstellung + leeres Display    MQ-2 Teil
-    display.clearDisplay();
-    display.setTextColor(WHITE);
-    display.setTextSize(1);
-    display.setCursor(1, 0);
-    display.println("LPG:  " + String(mq2.readLPG(), 0)+ " PPM");
-    display.setTextSize(1);
-    display.println("CO :  " + String(mq2.readCO(), 0)+ " PPM");
-    display.setTextSize(1);
-    display.println("Rauch:" + String(mq2.readSmoke(), 0)+ " PPM");
-    display.display();
-    delay(5000);    // Ende des zweiten Steps
 }
