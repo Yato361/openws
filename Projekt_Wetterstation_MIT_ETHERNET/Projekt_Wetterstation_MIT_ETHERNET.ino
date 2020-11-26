@@ -29,9 +29,9 @@ byte mac[] = {0x90, 0xA2, 0xDA, 0x00, 0xFB, 0x80};
 // Eine IP im lokalen Netzwerk angeben. 
 IPAddress ip(192,168,178,10);
 //The char pointer contains the whole server domain as chars.
-char* server= ""; 
+char* server = ""; 
 //Defining the EthernetClient
-EthernetClient client(server,80);
+EthernetClient client;
 
 void setup() {
   // Serielle Datenübertragung, für den Monitor erstellen
@@ -51,5 +51,28 @@ void setup() {
 }
 
 void loop() {
-    
+  float information[] = {dht.readTemperature(), dht.readHumidity(), mq2.readCO(), mq2.readLPG(), mq2.readSmoke()}; 
+  if(client.connect(server, 80)){
+      Serial.println("connected");
+      client.println("GET /insert");
+      client.print("?temperature=");
+      client.print(dht.readTemperature());
+      client.print("&humidity=");
+      client.print(dht.readHumidity());
+      client.print("&lpg=");
+      client.print(mq2.readLPG();
+      client.print("&co=");
+      client.print(mq2.readCO());
+      client.print("&smoke=");
+      client.print(mq2.readSmoke());
+      client.print("HTTP/1.0");
+      client.println();
+  }else{
+      Serial.println("connection failed");
+  }
+
+  if (client.available()) {
+    char c = client.read();
+    Serial.print(c);
+  }
 }

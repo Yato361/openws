@@ -40,6 +40,7 @@ namespace weather_arduino_api.Controllers
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message + " " + e.StackTrace);
                 return ResponseTypes.EXCEPTION_ERROR;
             }
         }
