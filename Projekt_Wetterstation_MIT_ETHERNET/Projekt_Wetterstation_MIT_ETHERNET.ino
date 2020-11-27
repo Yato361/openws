@@ -1,4 +1,3 @@
-// Bibliotheken für das OLED- Panel
 #include <SPI.h>
 #include <Wire.h>
 #include <SSD1306Ascii.h>
