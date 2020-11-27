@@ -1,13 +1,14 @@
 // Bibliotheken für das OLED- Panel
 #include <SPI.h>
 #include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+#include <SSD1306Ascii.h>
+#include <SSD1306AsciiAvrI2c.h>
 #include <MQ2.h>
 #include <DHT.h>
 #include <Ethernet.h>
 
-#define OLED_RESET 4
+#define RST_PIN -1
+#define I2C_ADDRESS 0x3C
 #define DHTPIN 8
 #define DHTTYPE DHT11
 
@@ -16,16 +17,22 @@ char * server = "";
 byte mac[] = {(byte)random(256), (byte)random(256), (byte)random(256), (byte)random(256), (byte)random(256), (byte)random(256)}; //random mac id generation
 int Analog_Input = A0;
 
-Adafruit_SSD1306 display(OLED_RESET);
+SSD1306AsciiAvrI2c oled;
+
 DHT dht(DHTPIN, DHTTYPE);
 MQ2 mq2(Analog_Input);
 IPAddress ip(192,168,178,10);
 EthernetClient client;
 
 void setup() {
+#if RST_PIN >= 0
+  oled.begin(&Adafruit128x64, I2C_ADDRESS, RST_PIN);
+#else // RST_PIN >= 0
+  oled.begin(&Adafruit128x64, I2C_ADDRESS);
+#endif
+  
   Serial.begin(9600);
   Ethernet.begin(mac, ip);
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   
   dht.begin();
   mq2.begin();
@@ -38,24 +45,21 @@ void loop() {
   //defining all loop framed constants
   float information[] = {dht.readTemperature(), dht.readHumidity(), mq2.readCO(), mq2.readLPG(), mq2.readSmoke()};
 
-  //print for LPG & CO & SMOKE
-  resetDisplay();
-  display.println("LPG:  " + String((int)information[3]) + " PPM");
-  display.setTextSize(1);
-  display.println("CO :  " + String((int)information[2]) + " PPM");
-  display.setTextSize(1);
-  display.println("Rauch:" + String((int)information[4]) + " PPM");
-  display.display();
+  //clearing and initializing the front of the oled
+  oled.setFont(Adafruit5x7);
+  oled.clear();
   
-  //DELAY
-  delay(500);
+  //print for LPG & CO & SMOKE
+  oled.println("LPG:  " + String((int)information[3]) + " PPM");
+  print_leertaste();
+  oled.println("CO :  " + String((int)information[2]) + " PPM");
+  print_leertaste();
+  oled.println("Rauch:" + String((int)information[4]) + " PPM");
 
   //print for TEMPERATURE 6 HUMDIDITY
-  resetDisplay();
-  display.println("Temperatur:       " + String((int)information[0]) + "C");
-  display.setTextSize(1);
-  display.println("Luftfeuchtigkeit: " + String((int)information[1]) + "%");
-  display.display();
+  print_leertaste();
+  oled.println("Temp____: " + String((int)information[0]) + "C");
+  oled.println("Humidity: " + String((int)information[1]) + "%");
 
   //HTTP REQUEST to our Web-API
   if(client.connect(server, 80)){
@@ -83,9 +87,6 @@ void loop() {
   }
 }
 
-void resetDisplay(){
-  display.clearDisplay();
-  display.setTextColor(WHITE);
-  display.setTextSize(1);
-  display.setCursor(1, 0);
+void print_leertaste(){
+    oled.println("---------------------");  
 }
