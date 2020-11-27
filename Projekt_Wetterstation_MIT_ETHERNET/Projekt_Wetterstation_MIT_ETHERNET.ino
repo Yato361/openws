@@ -11,8 +11,9 @@
 #define DHTPIN 8
 #define DHTTYPE DHT11
 
-char* server = ""; 
-byte mac[] = {random(256), random(256), random(256), random(256), random(256), random(256)}; //random mac id generation
+//defining all constants as primitive variables
+char * server = ""; 
+byte mac[] = {(byte)random(256), (byte)random(256), (byte)random(256), (byte)random(256), (byte)random(256), (byte)random(256)}; //random mac id generation
 int Analog_Input = A0;
 
 Adafruit_SSD1306 display(OLED_RESET);
@@ -45,7 +46,7 @@ void loop() {
   display.setTextSize(1);
   display.println("Rauch:" + String((int)information[4]) + " PPM");
   display.display();
-
+  
   //DELAY
   delay(500);
 
