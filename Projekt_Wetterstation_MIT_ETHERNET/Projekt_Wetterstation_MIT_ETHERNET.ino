@@ -3,68 +3,73 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-// Bibliothek für den MQ-2 Sensor
 #include <MQ2.h>
-// Bibliothek für den DHT-11 Sensor
 #include <DHT.h>
-// Bibiothek für das Ethernetshield
 #include <Ethernet.h>
 
-#define OLED_RESET 4 // RESET- Funktion: Nicht genutzt bei diesem Display, da keine vorhanden | Muss angegeben werden
-Adafruit_SSD1306 display(OLED_RESET);
+#define OLED_RESET 4
+#define DHTPIN 8
+#define DHTTYPE DHT11
 
-
-#define DHTPIN 8     // Digitaler Pin am Arduino: 8
-#define DHTTYPE DHT11   // Sensortyp: DHT11
-DHT dht(DHTPIN, DHTTYPE);
-
-// Globale Vars. benötigt MQ-2
-int Analog_Input = A0;    // Analoger Pin am Arduino: A0
-
-MQ2 mq2(Analog_Input);
-
-// Hier die MAC Adresse des Shields eingeben
-// (Aufkleber auf Rückseite)
-byte mac[] = {0x90, 0xA2, 0xDA, 0x00, 0xFB, 0x80};
-// Eine IP im lokalen Netzwerk angeben. 
-IPAddress ip(192,168,178,10);
-//The char pointer contains the whole server domain as chars.
 char* server = ""; 
-//Defining the EthernetClient
+byte mac[] = {random(256), random(256), random(256), random(256), random(256), random(256)}; //random mac id generation
+int Analog_Input = A0;
+
+Adafruit_SSD1306 display(OLED_RESET);
+DHT dht(DHTPIN, DHTTYPE);
+MQ2 mq2(Analog_Input);
+IPAddress ip(192,168,178,10);
 EthernetClient client;
 
 void setup() {
-  // Serielle Datenübertragung, für den Monitor erstellen
   Serial.begin(9600);
-  // mit I2C-Adresse 0x3c initialisieren
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-  // DHT11 - Startprozess
-  dht.begin();
-  // MQ-2 - Startprozess:
-  mq2.begin();
-  // Ethernet Verbindung und Server starten
   Ethernet.begin(mac, ip);
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   
-  Serial.print("Client gestartet. IP: ");
-  // IP des Arduino-Servers ausgeben
+  dht.begin();
+  mq2.begin();
+
+  Serial.print("Client gestartet. EIGENE IP: ");
   Serial.println(Ethernet.localIP());
 }
 
 void loop() {
-  float information[] = {dht.readTemperature(), dht.readHumidity(), mq2.readCO(), mq2.readLPG(), mq2.readSmoke()}; 
+  //defining all loop framed constants
+  float information[] = {dht.readTemperature(), dht.readHumidity(), mq2.readCO(), mq2.readLPG(), mq2.readSmoke()};
+
+  //print for LPG & CO & SMOKE
+  resetDisplay();
+  display.println("LPG:  " + String((int)information[3]) + " PPM");
+  display.setTextSize(1);
+  display.println("CO :  " + String((int)information[2]) + " PPM");
+  display.setTextSize(1);
+  display.println("Rauch:" + String((int)information[4]) + " PPM");
+  display.display();
+
+  //DELAY
+  delay(500);
+
+  //print for TEMPERATURE 6 HUMDIDITY
+  resetDisplay();
+  display.println("Temperatur:       " + String((int)information[0]) + "C");
+  display.setTextSize(1);
+  display.println("Luftfeuchtigkeit: " + String((int)information[1]) + "%");
+  display.display();
+
+  //HTTP REQUEST to our Web-API
   if(client.connect(server, 80)){
       Serial.println("connected");
       client.println("GET /insert");
       client.print("?temperature=");
-      client.print(dht.readTemperature());
+      client.print(information[0]);
       client.print("&humidity=");
-      client.print(dht.readHumidity());
+      client.print(information[1]);
       client.print("&lpg=");
-      client.print(mq2.readLPG());
+      client.print(information[3]);
       client.print("&co=");
-      client.print(mq2.readCO());
+      client.print(information[2]);
       client.print("&smoke=");
-      client.print(mq2.readSmoke());
+      client.print(information[4]);
       client.print("HTTP/1.0");
       client.println();
   }else{
@@ -75,4 +80,11 @@ void loop() {
     char c = client.read();
     Serial.print(c);
   }
+}
+
+void resetDisplay(){
+  display.clearDisplay();
+  display.setTextColor(WHITE);
+  display.setTextSize(1);
+  display.setCursor(1, 0);
 }
