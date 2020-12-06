@@ -2,7 +2,7 @@
 #include <Wire.h>
 #include <SSD1306Ascii.h>
 #include <SSD1306AsciiAvrI2c.h>
-#include <MQ2.h>
+#include <MQ2Lib.h>
 #include <DHT.h>
 #include <Ethernet.h>
 
@@ -15,11 +15,11 @@
 char * server = ""; 
 byte mac[] = {(byte)random(256), (byte)random(256), (byte)random(256), (byte)random(256), (byte)random(256), (byte)random(256)}; //random mac id generation
 int Analog_Input = A0;
-
+                                                                  
 SSD1306AsciiAvrI2c oled;
 
 DHT dht(DHTPIN, DHTTYPE);
-MQ2 mq2(Analog_Input);
+MQ2 mq2(Analog_Input, true);
 IPAddress ip(192,168,178,10);
 EthernetClient client;
 
@@ -41,39 +41,43 @@ void setup() {
 }
 
 void loop() {
+  mq2.read(true);
+  
   //defining all loop framed constants
-  float information[] = {dht.readTemperature(), dht.readHumidity(), mq2.readCO(), mq2.readLPG(), mq2.readSmoke()};
-
+  float temp = dht.readTemperature();
+  float hum = dht.readHumidity();
+  float co = mq2.readCO();
+  float lpg = mq2.readLPG();
+  float smoke = mq2.readSmoke();
+  
   //clearing and initializing the front of the oled
   oled.setFont(Adafruit5x7);
   oled.clear();
   
   //print for LPG & CO & SMOKE
-  oled.println("LPG:  " + String((int)information[3]) + " PPM");
-  print_leertaste();
-  oled.println("CO :  " + String((int)information[2]) + " PPM");
-  print_leertaste();
-  oled.println("Rauch:" + String((int)information[4]) + " PPM");
+  oled.println("LPG:      " + String(lpg) + " PPM");
+  oled.println("CO :      " + String(co) + " PPM");
+  oled.println("Rauch:    " + String(smoke) + " PPM");
 
   //print for TEMPERATURE 6 HUMDIDITY
   print_leertaste();
-  oled.println("Temp____: " + String((int)information[0]) + "C");
-  oled.println("Humidity: " + String((int)information[1]) + "%");
+  oled.println("Temp____: " + String(temp) + "C");
+  oled.println("Humidity: " + String(hum) + "%");
 
   //HTTP REQUEST to our Web-API
   if(client.connect(server, 80)){
       Serial.println("connected");
       client.println("GET /insert");
       client.print("?temperature=");
-      client.print(information[0]);
+      client.print(temp);
       client.print("&humidity=");
-      client.print(information[1]);
+      client.print(hum);
       client.print("&lpg=");
-      client.print(information[3]);
+      client.print(lpg);
       client.print("&co=");
-      client.print(information[2]);
+      client.print(co);
       client.print("&smoke=");
-      client.print(information[4]);
+      client.print(smoke);
       client.print("HTTP/1.0");
       client.println();
   }else{
