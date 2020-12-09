@@ -52,7 +52,6 @@ void loop() {
   float co = mq2.readCO();
   float lpg = mq2.readLPG();
   float smoke = mq2.readSmoke();
-  float temp_bmp = bmp.readTemperature();
   float pressure = (bmp.readPressure()/100);
   float altitude = (bmp.readAltitude(1019.66));
   
@@ -69,14 +68,9 @@ void loop() {
   print_leertaste();
   oled.println("Temp____: " + String(temp) + "C");
   oled.println("Humidity: " + String(hum) + "%");
-  delay(2000);
-
-  //print for BMP280(temp_2, pressure, altitude) //
-  oled.clear();
-  oled.println("Temp_BMP: " + String(temp_bmp) + "C");
   oled.println("Pressure: " + String(pressure) + "hPa");
   oled.println("Altitude: " + String(altitude) + "m");
-  delay(2000);
+  delay(2500);
   
   //HTTP REQUEST to our Web-API
   if(client.connect(server, 80)){
