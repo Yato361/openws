@@ -3,7 +3,6 @@
 #include <SSD1306Ascii.h>
 #include <SSD1306AsciiAvrI2c.h>
 #include <MQ2Lib.h>
-#include <Adafruit_BMP280.h> //
 #include <DHT.h>
 #include <Ethernet.h>
 
@@ -18,7 +17,6 @@ byte mac[] = {(byte)random(256), (byte)random(256), (byte)random(256), (byte)ran
 int Analog_Input = A0;
                                                                   
 SSD1306AsciiAvrI2c oled;
-Adafruit_BMP280 bmp; //
 
 DHT dht(DHTPIN, DHTTYPE);
 MQ2 mq2(Analog_Input, true);
@@ -37,7 +35,6 @@ void setup() {
   
   dht.begin();
   mq2.begin();
-  bmp.begin(0x76); //
 
   Serial.print("Client gestartet. EIGENE IP: ");
   Serial.println(Ethernet.localIP());
@@ -52,9 +49,6 @@ void loop() {
   float co = mq2.readCO();
   float lpg = mq2.readLPG();
   float smoke = mq2.readSmoke();
-  float temp_bmp = bmp.readTemperature();
-  float pressure = (bmp.readPressure()/100);
-  float altitude = (bmp.readAltitude(1019.66));
   
   //clearing and initializing the front of the oled
   oled.setFont(Adafruit5x7);
@@ -65,19 +59,11 @@ void loop() {
   oled.println("CO :      " + String(co) + " PPM");
   oled.println("Rauch:    " + String(smoke) + " PPM");
 
-  //print for TEMPERATURE & HUMDIDITY
+  //print for TEMPERATURE 6 HUMDIDITY
   print_leertaste();
   oled.println("Temp____: " + String(temp) + "C");
   oled.println("Humidity: " + String(hum) + "%");
-  delay(2000);
 
-  //print for BMP280(temp_2, pressure, altitude) //
-  oled.clear();
-  oled.println("Temp_BMP: " + String(temp_bmp) + "C");
-  oled.println("Pressure: " + String(pressure) + "hPa");
-  oled.println("Altitude: " + String(altitude) + "m");
-  delay(2000);
-  
   //HTTP REQUEST to our Web-API
   if(client.connect(server, 80)){
       Serial.println("connected");
