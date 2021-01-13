@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -25,6 +26,7 @@ namespace weather_arduino_api.Controllers
         {
             try
             {
+                Debug.Debug.Log("API INSERT request starting");
                 ResponseTypeSensorSetEngine engine = new ResponseTypeSensorSetEngine(hwid,temperature,humidity,lpg,co,smoke);
                 if (!engine.IsCompletelyNotNull())
                     return ResponseTypes.NOT_COMPLETE_ERROR;
@@ -36,11 +38,12 @@ namespace weather_arduino_api.Controllers
                     return ResponseTypes.NO_RIGHTS_ERROR;
                 DatabaseSensorSet databaseSensorSet = new DatabaseSensorSet();
                 databaseSensorSet.InsertSensorSetToDatabase(sensorSet);
+                Debug.Debug.Log("API INSERT request successfully completed.");
                 return ResponseTypes.SUCCESSFULL;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message + " " + e.StackTrace);
+                Debug.Debug.Log(e.Message + " " + e.StackTrace);
                 return ResponseTypes.EXCEPTION_ERROR;
             }
         }
