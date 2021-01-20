@@ -26,12 +26,12 @@ namespace weather_arduino_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders =
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,8 +46,6 @@ namespace weather_arduino_api
             {
                 app.UseForwardedHeaders();
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
