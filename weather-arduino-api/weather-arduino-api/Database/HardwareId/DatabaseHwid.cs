@@ -7,7 +7,8 @@ namespace weather_arduino_api.Database.HardwareId
     {
         public ArrayList GetHardwareIdList()
         {
-            MySqlCommand cmd1 = GetConnection().CreateCommand();
+            using MySqlConnection connection = GetConnection();
+            MySqlCommand cmd1 = connection.CreateCommand();
             cmd1.CommandText = "SELECT * FROM `arduino_station_weather_hwid`";
             ArrayList arrayList = new ArrayList();
             MySqlDataReader reader1 = cmd1.ExecuteReader();
@@ -21,7 +22,8 @@ namespace weather_arduino_api.Database.HardwareId
 
         public bool ContainsHardwareId(int hwid)
         {
-            MySqlCommand cmd1 = GetConnection().CreateCommand();
+            using MySqlConnection connection = GetConnection();
+            MySqlCommand cmd1 = connection.CreateCommand();
             cmd1.CommandText = "SELECT * FROM `arduino_station_weather_hwid` WHERE `HWID` = @hwid";
             cmd1.Prepare();
             cmd1.Parameters.AddWithValue("@hwid", hwid);

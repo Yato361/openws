@@ -8,8 +8,10 @@ namespace weather_arduino_api
     {
         public void InsertSensorSetToDatabase(SensorSet sensorSet)
         {
-            MySqlCommand cmd1 = GetConnection().CreateCommand();
-            cmd1.CommandText = "INSERT INTO `arduino_station_weather_information`(`HWID`, `UNIX_TIMESTAMP`, `TEMP`, `HUMIDITY`, `LPG`, `CO`, `SMOKE`) VALUES (@hw,@ut,@te,@hu,@lp,@co,@sm)";
+            using MySqlConnection connection = GetConnection();
+            MySqlCommand cmd1 = connection.CreateCommand();
+            cmd1.CommandText =
+                "INSERT INTO `arduino_station_weather_information`(`HWID`, `UNIX_TIMESTAMP`, `TEMP`, `HUMIDITY`, `LPG`, `CO`, `SMOKE`) VALUES (@hw,@ut,@te,@hu,@lp,@co,@sm)";
             cmd1.Prepare();
             cmd1.Parameters.AddWithValue("@hw", sensorSet.Hwid);
             cmd1.Parameters.AddWithValue("@ut", sensorSet.UnixTimeStamp);

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MySqlConnector;
 using weather_arduino_api.Database;
 
 namespace weather_arduino_api
@@ -19,12 +20,19 @@ namespace weather_arduino_api
             WeatherMySqlConnection weatherMySqlConnection = new WeatherMySqlConnection();
             try
             {
-                if (weatherMySqlConnection.GetConnection().State != ConnectionState.Closed)
+                bool startApi = false;
+                using (MySqlConnection connection = weatherMySqlConnection.GetConnection())
                 {
-                    Debug.Debug.Log("MySQL-Test successfully carried out!");
+                    if (connection.State != ConnectionState.Closed)
+                    {
+                        startApi = true;
+                        Debug.Debug.Log("MySQL-Test successfully carried out!");
+                    }else
+                        Debug.Debug.Log("WAPI MySQL could not be connected. Program is stopping!");
+
+                }
+                if(startApi)
                     CreateHostBuilder(args).Build().Run();
-                }else
-                    Debug.Debug.Log("WAPI MySQL could not be connected. Program is stopping!");
             }
             catch (Exception e)
             {
