@@ -162,6 +162,6 @@ void loop() {
 Das vom Server gesendete Response-Code wird vom Client ignoriert. \
 Es steht in Planung, die Response-Codes gelistet auf einen OLED Bildschirm anzuzeigen.
 
-Derzeit steht im `loop` ein drei Sekunden delay, um ein mögliches unerwünschtes `Database flooding` zu verhindern. 
+Derzeit steht im `loop` ein drei Sekunden delay, um ein mögliches unerwünschtes `Database-Flooding` zu verhindern. 
 
 # Website (In Planung)
