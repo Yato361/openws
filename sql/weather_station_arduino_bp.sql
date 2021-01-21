@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.6.6deb5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Erstellungszeit: 06. Dez 2020 um 16:14
--- Server-Version: 10.4.11-MariaDB
--- PHP-Version: 7.4.5
+-- Host: localhost:3306
+-- Erstellungszeit: 21. Jan 2021 um 02:43
+-- Server-Version: 10.3.27-MariaDB-0+deb10u1
+-- PHP-Version: 7.3.19-1~deb10u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -41,7 +40,7 @@ CREATE TABLE `arduino_station_weather_hwid` (
 CREATE TABLE `arduino_station_weather_information` (
   `ID_PRIMARY` int(11) NOT NULL,
   `HWID` int(11) NOT NULL COMMENT 'The hardware ID of the device that send an request',
-  `UNIX_TIMESTAMP` float NOT NULL COMMENT 'The time the server received the query',
+  `UNIX_TIMESTAMP` int(11) NOT NULL COMMENT 'The time the server received the query',
   `TEMP` float NOT NULL COMMENT 'input temperature',
   `HUMIDITY` float NOT NULL COMMENT 'input humidity',
   `LPG` float NOT NULL COMMENT 'input lpg',
@@ -73,15 +72,12 @@ ALTER TABLE `arduino_station_weather_information`
 -- AUTO_INCREMENT für Tabelle `arduino_station_weather_hwid`
 --
 ALTER TABLE `arduino_station_weather_hwid`
-  MODIFY `ID_PRIMARY` int(11) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `ID_PRIMARY` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT für Tabelle `arduino_station_weather_information`
 --
 ALTER TABLE `arduino_station_weather_information`
   MODIFY `ID_PRIMARY` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
