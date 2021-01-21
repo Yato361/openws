@@ -31,7 +31,7 @@ namespace weather_arduino_api.Controllers
                 if (!engine.IsCompletelyNotNull())
                     return ResponseTypes.NOT_COMPLETE_ERROR;
                 if (!engine.IsFormattedRightly())
-                    return ResponseTypes.UNFORMATTED_TYP_ERROR;
+                    return ResponseTypes.UNFORMATTED_TYPE_ERROR;
                 SensorSet sensorSet = engine.FormatSensorSet();
                 DatabaseHwid dbHwid = new DatabaseHwid();
                 if (!dbHwid.ContainsHardwareId(sensorSet.Hwid))
