@@ -12,32 +12,51 @@
 #define DHTTYPE DHT11
 
 //defining all constants as primitive variables
-char * server = ""; 
-byte mac[] = {(byte)random(256), (byte)random(256), (byte)random(256), (byte)random(256), (byte)random(256), (byte)random(256)}; //random mac id generation
+char server[] = "pi.0unknownuser.de"; 
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 int Analog_Input = A0;
                                                                   
 SSD1306AsciiAvrI2c oled;
 
 DHT dht(DHTPIN, DHTTYPE);
 MQ2 mq2(Analog_Input, true);
-IPAddress ip(192,168,178,10);
+IPAddress ip(192, 168, 0, 177);
+IPAddress myDns(192, 168, 0, 1);
 EthernetClient client;
+bool printWebData = true;
 
 void setup() {
+  Serial.begin(9600);
+  while (!Serial) {
+    ; 
+  }
+  Serial.println("Initialize Ethernet with DHCP:");
+  if (Ethernet.begin(mac) == 0) {
+    if (Ethernet.hardwareStatus() == EthernetNoHardware) {
+      Serial.println("Ethernet shield was not found.  Sorry, can't run without hardware. :(");
+      while (true) {
+        delay(1); 
+      }
+    }
+    if (Ethernet.linkStatus() == LinkOFF) {
+      Serial.println("Ethernet cable is not connected.");
+    }
+    Serial.print("1203912ß3098123123");
+    Ethernet.begin(mac, ip, myDns);
+  } else {
+    Serial.print("  DHCP assigned IP ");
+    Serial.println(Ethernet.localIP());
+  }
+
 #if RST_PIN >= 0
   oled.begin(&Adafruit128x64, I2C_ADDRESS, RST_PIN);
 #else // RST_PIN >= 0
   oled.begin(&Adafruit128x64, I2C_ADDRESS);
-#endif
-  
-  Serial.begin(9600);
-  Ethernet.begin(mac, ip);
+#endif  
   
   dht.begin();
   mq2.begin();
-
-  Serial.print("Client gestartet. EIGENE IP: ");
-  Serial.println(Ethernet.localIP());
+  delay(1000);
 }
 
 void loop() {
@@ -63,12 +82,19 @@ void loop() {
   print_leertaste();
   oled.println("Temp____: " + String(temp) + "C");
   oled.println("Humidity: " + String(hum) + "%");
-
+  
   //HTTP REQUEST to our Web-API
+  Serial.print("connecting to ");
+  Serial.print(server);
+  Serial.println("...");
+  
   if(client.connect(server, 80)){
-      Serial.println("connected");
-      client.println("GET /insert");
-      client.print("?temperature=");
+      Serial.println("Connected to");
+      Serial.println(client.remoteIP());
+      client.print("GET /insert");
+      client.print("?hwid=");
+      client.print("1867912635");
+      client.print("&temperature=");
       client.print(temp);
       client.print("&humidity=");
       client.print(hum);
@@ -78,16 +104,14 @@ void loop() {
       client.print(co);
       client.print("&smoke=");
       client.print(smoke);
-      client.print("HTTP/1.0");
+      client.println(" HTTP/1.1");
+      client.println("Host: pi.0unknownuser.de");
+      client.println("Connection: close");
       client.println();
   }else{
       Serial.println("connection failed");
   }
-
-  if (client.available()) {
-    char c = client.read();
-    Serial.print(c);
-  }
+  delay(3000);
 }
 
 void print_leertaste(){
