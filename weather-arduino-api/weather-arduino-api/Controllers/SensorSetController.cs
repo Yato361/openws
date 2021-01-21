@@ -29,7 +29,7 @@ namespace weather_arduino_api.Controllers
                 Debug.Debug.Log("API INSERT request starting");
                 ResponseTypeSensorSetEngine engine = new ResponseTypeSensorSetEngine(hwid,temperature,humidity,lpg,co,smoke);
                 if (!engine.IsCompletelyNotNull())
-                    return ResponseTypes.NOT_COMPLETE_ERROR;
+                    return ResponseTypes.NOT_COMPLETED_ERROR;
                 if (!engine.IsFormattedRightly())
                     return ResponseTypes.UNFORMATTED_TYPE_ERROR;
                 SensorSet sensorSet = engine.FormatSensorSet();

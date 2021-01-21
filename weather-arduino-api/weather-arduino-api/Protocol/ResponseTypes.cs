@@ -4,7 +4,7 @@
     {
         SUCCESSFULL = 0,
         UNFORMATTED_TYPE_ERROR = 1,
-        NOT_COMPLETE_ERROR = 2,
+        NOT_COMPLETED_ERROR = 2,
         NO_RIGHTS_ERROR = 3,
         EXCEPTION_ERROR = 4
     }
