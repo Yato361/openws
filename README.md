@@ -60,7 +60,7 @@ Datenbank Struktur
 ![](https://github.com/Yato361/weather-station/blob/main/DB_STRUCTURE_PICTURE.png)
 
 # Arduino Software
-Das Arduino wurde so Programmiert, dass sie in einem Informationen aus der Umgebung sammelt, sie auf einem LCD Bildschirm ausgibt und dem Server schickt. \
+Das Arduino wurde so Programmiert, dass sie in einem Informationen aus der Umgebung sammelt, sie auf einem OLED Bildschirm ausgibt und dem Server schickt. \
 Beim start des Arduinos wird dieser zuerst Variablen wie server, mac und IPAdress etc. definieren, um in der nächsten Phase, der Initialisierung des Ethernetshields, keine probleme hervorzurufen.
 
 Zunächst werden im `setup` Funktion, Module wie das Ethernetshield, MQ2 und das DHT Modul initialisiert. Um das Debuggen zu ermöglichen wird hierbei auch Serial verwendet.
