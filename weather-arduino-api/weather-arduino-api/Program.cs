@@ -28,7 +28,7 @@ namespace weather_arduino_api
             }
             catch (Exception e)
             {
-                Debug.Debug.Log("WAPI MySQL could not be connected. Program is stopping! Exception: " + e.Message);
+                Debug.Debug.Log("Exception was thrown. Program is stopping! Exception: " + e.Message);
             }
         }
 

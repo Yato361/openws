@@ -14,6 +14,9 @@ namespace weather_arduino_api.Database
         {
             if (_connection == null || _connection.State == ConnectionState.Closed)
             {
+                _connection?.Close();
+                _connection?.Dispose();
+                _connection = null;
                 _connection = new MySqlConnection(_connectionString);
                 _connection.Open();
             }
