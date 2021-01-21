@@ -33,11 +33,9 @@ namespace weather_arduino_api.Database.HardwareId
                 if(!reader1.IsClosed)reader1.Close();
                 return true;
             }
-            else
-            {
-                if(!reader1.IsClosed)reader1.Close();
-                return false;
-            }
+
+            if(!reader1.IsClosed)reader1.Close();
+            return false;
         }
     }
 }
