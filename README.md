@@ -61,7 +61,7 @@ Datenbank Struktur
 
 # Arduino Software
 Das Arduino wurde so Programmiert, dass sie Informationen aus der Umgebung sammelt, sie auf einem Bildschirm ausgibt und dem Server schickt. \
-Beim start des Arduinos wird dieser zuerst Variablen wie server, mac und IPAdress etc. definieren, um in der nächsten Phase, der Initialisierung des Ethernetshields, keine probleme hervorzurufen.
+Bei dem starten des Arduinos wird dieser zuerst Variablen wie `server`, `mac` und `IPAdress` etc. definieren, um in der nächsten Phase, der Initialisierung des Ethernetshields, keine probleme hervorzurufen.
 
 Zunächst werden im `setup` Funktion, Module wie das Ethernetshield, MQ2 und das DHT Modul initialisiert. Um das Debuggen zu ermöglichen wird hierbei auch Serial verwendet.
 ```c
