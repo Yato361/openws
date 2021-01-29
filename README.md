@@ -1,4 +1,4 @@
-# Weather-Station
+# Open-Weather-Station
 (EN) A small arduino project to gain enviromental information. \
 (DE) Ein kleines Arduino Projekt um umgebungs Informationen zu sammeln.
 
