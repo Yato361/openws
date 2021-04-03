@@ -27,8 +27,8 @@ Derzeit haben wir nur 5 Response-Codes eingebaut.
 4. *NO_RIGHTS_ERROR* mit dem Response-Code '3'
 5. *EXCEPTION_ERROR* mit dem Response-Code '4'
 
-Jedoch kann das Arduino derzeit diese Response-Codes *NOCH* nicht verarbeiten. \
-Sie dient derzeit nur als Debugfeature.
+Jedoch kann das Arduino derzeit diese Response-Codes noch nicht verarbeiten. \
+Sie ist somit nur als Debugfeature.
 
 Die HWID Authentifikation geschieht parallel mit der Fehlerprüfung der jeweiligen Informationen. \
 Sollte z.B. ein Response-Code ausgeworfen werden, welches alles andere als *SUCCESSFULL* ist, wird kein Datenbankeintrag erfolgen. \
