@@ -56,7 +56,7 @@ Beispiel Eintrag
 Beispiel Query \
 INSERT INTO \`arduino_station_weather_information\`(\`HWID\`, \`UNIX_TIMESTAMP\`, \`TEMP\`, \`HUMIDITY\`, \`LPG\`, \`CO\`, \`SMOKE\`) VALUES (1867912635, 1611193524, 24.3, 46, 0, 0, 0.01)
 
-Datenbank Struktur
+Datenbank Struktur: \
 ![](https://github.com/Yato361/weather-station/blob/main/DB_STRUCTURE_PICTURE.png)
 
 # Arduino Software
