@@ -1,6 +1,6 @@
 # Open-Weather-Station
 (EN) A small arduino project to gain enviromental information. \
-(DE) Ein kleines Arduino Projekt um umgebungs Informationen zu sammeln.
+(DE) Ein kleines Arduino Projekt um Informationen aus der Umgebung zu sammeln.
 
 # Dokumentation Inhaltsverzeichnis
 * API
