@@ -6,6 +6,10 @@
 * API
 * Datenbanken
 * Arduino Software
+* Arduino Hardware
+* Schaltplan vom Arduino
+* Installation vom Arduino
+* Installation der API
 * Website (In planung)
 
 # API 
@@ -63,7 +67,7 @@ Datenbank Struktur: \
 Das Arduino wurde so Programmiert, dass sie Informationen aus der Umgebung sammelt, sie auf einem Bildschirm ausgibt und dem Server schickt. \
 Bei dem starten des Arduinos wird dieser zuerst Variablen wie `server`, `mac` und `IPAdress` etc. definieren, um in der nächsten Phase, der Initialisierung des Ethernetshields, keine probleme hervorzurufen.
 
-Zunächst werden im `setup` Funktion, Module wie das Ethernetshield, MQ2 und das DHT Modul initialisiert. Um das Debuggen zu ermöglichen wird hierbei auch Serial verwendet.
+Zunächst werden die Module Ethernetshield, MQ2 und DHT im `setup` Funktion initialisiert. Um das Debuggen zu ermöglichen wird hierbei auch `Serial` verwendet.
 ```c
 void setup() {
   Serial.begin(9600);
@@ -163,5 +167,32 @@ Das vom Server gesendete Response-Code wird vom Client ignoriert. \
 Es steht in Planung, die Response-Codes gelistet auf einem OLED Bildschirm anzuzeigen.
 
 Derzeit steht im `loop` ein drei Sekunden delay, um ein mögliches unerwünschtes `Database-Flooding` zu verhindern. 
+
+# Arduino Hardware
+
+Das Arduino Hardware besteht aus folgenden Komponenten
+
+* MQ2 Sensor
+  * Misst die Werte: LPQ (Liquified Petroleum Gas), CO (Kohlenstoff Monoxid), Rauchpartikel
+* DHT11 Sensor
+  * Misst die Werte: Temperatur, Luftfeuchtigkeit
+* OLED 128x64 Pixel 0,96 Zoll
+  * Das OLED Display wird dazu verwendet die aktuellen Werte der Sensoren vereinfacht auszugeben.
+* Ethernet- Shield W5100
+  * Das Ethernet- Shield wird auf dem Arduino Uno montiert, um eine Netzverbindung zu ermöglichen.
+* Arduino Uno
+  * Der Mikrokontroller sammelt und wertet alle Informationen aus und schickt die HTTP Anfragen. 
+* 26 Überbrückungskabel, ein Steckbrett und ein 10kOhm Widerstand
+
+# Schaltplan vom Arduino
+![](https://github.com/Yato361/weather-station/blob/main/ARDUINO_SCHALTPLAN.png)
+
+# Installation vom Arduino
+1. Bauen Sie das Schaltplan nach.
+2. Brennen Sie die Software auf das Arduino. Passen Sie bitte die Variablen `server[]`, `mac[]` und `ip` an. Link vom Arduino-Software: https://github.com/Yato361/openws/blob/main/Projekt_Wetterstation_MIT_ETHERNET/Projekt_Wetterstation_MIT_ETHERNET.ino
+3. Verbinden Sie nun mithilfe des Ethernetkabels, das Arduino mit Ihrem Router.
+
+# Installation vom DOTNET API
+(Derzeit in Bearbeitung)
 
 # Website (In Planung)
