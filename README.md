@@ -164,7 +164,7 @@ void loop() {
 }
 ```
 Das vom Server gesendete Response-Code wird vom Client ignoriert. \
-Es steht in Planung, die Response-Codes gelistet auf einem OLED Bildschirm anzuzeigen.
+Es ist geplant die Response-Codes gelistet auf einem OLED Bildschirm anzuzeigen.
 
 Derzeit steht im `loop` ein drei Sekunden delay, um ein mögliches unerwünschtes `Database-Flooding` zu verhindern. 
 
@@ -190,7 +190,7 @@ Das Arduino Hardware besteht aus folgenden Komponenten
 # Installation vom Arduino
 1. Bauen Sie das Schaltplan nach.
 2. Brennen Sie die Software auf das Arduino. Passen Sie bitte die Variablen `server[]`, `mac[]` und `ip` an. Link vom Arduino-Software: https://github.com/Yato361/openws/blob/main/Projekt_Wetterstation_MIT_ETHERNET/Projekt_Wetterstation_MIT_ETHERNET.ino
-3. Verbinden Sie nun mithilfe des Ethernetkabels, das Arduino mit Ihrem Router.
+3. Verbinden Sie nun mithilfe des Ethernetkabels das Arduino mit Ihrem Router.
 
 # Installation vom DOTNET API
 (Derzeit in Bearbeitung)
