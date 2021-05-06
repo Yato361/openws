@@ -5,3 +5,6 @@ weather-arduino-api/weather-arduino-api/obj
 weather-arduino-api/weather-arduino-api/Properties
 weather-arduino-api/weather-arduino-api/appsettings.Development.json
 weather-arduino-api/weather-arduino-api/appsettings.json
+weather-arduino-api/.vs/weather-arduino-api/v16/.suo
+weather-arduino-api/.vs/weather-arduino-api/config/applicationhost.config
+weather-arduino-api/.vs/weather-arduino-api/DesignTimeBuild/.dtbcache.v2
