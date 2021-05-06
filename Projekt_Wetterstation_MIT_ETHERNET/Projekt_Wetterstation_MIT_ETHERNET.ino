@@ -12,7 +12,7 @@
 #define DHTTYPE DHT11
 
 //defining all constants as primitive variables
-char server[] = "pi.0unknownuser.de"; 
+char server[] = "example.com"; 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 int Analog_Input = A0;
                                                                   
@@ -105,7 +105,7 @@ void loop() {
       client.print("&smoke=");
       client.print(smoke);
       client.println(" HTTP/1.1");
-      client.println("Host: pi.0unknownuser.de");
+      client.println("Host: example.com");
       client.println("Connection: close");
       client.println();
   }else{
